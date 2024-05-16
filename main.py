@@ -1,4 +1,4 @@
-#import html_cover
+import html_cover
 import text_cover
 import word_cover
 import json_cover
@@ -11,18 +11,30 @@ def select_pdf_file():
     pdf_path_entry.delete(0, tk.END)
     pdf_path_entry.insert(0, pdf_path)
 
-def convert_to_word():
-    word_cover.pdf_to_word(pdf_path_entry.get())
-    messagebox.showinfo("Başarılı", "PDF dönüştürme işlemi tamamlandı.")
 
-def convert_to_json():
-    json_cover.pdf_to_json(pdf_path_entry.get())
-    messagebox.showinfo("Başarılı", "PDF dönüştürme işlemi tamamlandı.")
+def convert_to_word():
+    pdf_path = pdf_path_entry.get()
+    output_path = filedialog.asksaveasfilename(defaultextension=".docx", filetypes=[("Word files", "*.docx")])
+    if output_path:
+        word_cover.pdf_to_word(pdf_path, output_path)
+        messagebox.showinfo("Başarılı", "PDF dönüştürme işlemi tamamlandı.")
 
 def convert_to_html():
-    pass
-#   html_cover.pdf_to_html(pdf_path_entry.get())
-#   messagebox.showinfo("Başarılı", "PDF dönüştürme işlemi tamamlandı.")
+    pdf_path = pdf_path_entry.get()
+    output_path = filedialog.asksaveasfilename(defaultextension=".html", filetypes=[("HTML files", "*.html")])
+    if output_path:
+        html_cover.pdf_to_html(pdf_path, output_path)
+        messagebox.showinfo("Başarılı", "PDF dönüştürme işlemi tamamlandı.")
+
+
+
+def convert_to_json():
+    pdf_path = pdf_path_entry.get()
+    output_path = filedialog.asksaveasfilename(defaultextension=".json", filetypes=[("JSON files", "*.json")])
+    if output_path:
+        json_cover.pdf_to_json(pdf_path, output_path)
+        messagebox.showinfo("Başarılı", "PDF dönüştürme işlemi tamamlandı.")
+
 
 def convert_to_txt():
     text_cover.pdf_to_text(pdf_path_entry.get())

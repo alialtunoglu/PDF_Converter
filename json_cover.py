@@ -1,14 +1,31 @@
-import json
 import pdfplumber
+import json
 
+def pdf_to_json(pdf_path, json_path):
+    try:
+        with pdfplumber.open(pdf_path) as pdf:
+            data = []
+            for page in pdf.pages:
+                page_data = {
+                    "page_number": page.page_number,
+                    "text": page.extract_text(),
+                    "images": []
+                }
 
-def pdf_to_json(pdf_path):
-    data = {}
-    with pdfplumber.open(pdf_path) as pdf:
-        for i, page in enumerate(pdf.pages):
-            page_data = {}
-            page_data['text'] = page.extract_text()
-            # Buraya diğer veri türlerini de ekleyebilirsiniz (görüntüler, tablolar, vs.)
-            data[f'page_{i+1}'] = page_data
-    with open(f"{pdf_path[:-4]}.json", 'w') as json_file:
-        json.dump(data, json_file)
+                for img in page.images:
+                    img_data = {
+                        "width": img["width"],
+                        "height": img["height"],
+                        "data": img["data"]
+                    }
+                    page_data["images"].append(img_data)
+
+                data.append(page_data)
+        
+        with open(json_path, "w") as json_file:
+            json.dump(data, json_file, indent=4)
+    except Exception as e:
+        print("Conversion Failed:", e)
+
+# Örnek kullanım:
+# pdf_to_json("sample2.pdf", "PdfToJson.json")

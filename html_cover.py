@@ -1,23 +1,19 @@
-import subprocess
-import tabula
+from spire.pdf.common import *
+from spire.pdf import *
 
+def pdf_to_html(pdf_path, html_path):
+    # Create an object of the PdfDocument class
+    doc = PdfDocument()
+    try:
+        # Load a PDF document
+        doc.LoadFromFile(pdf_path)
 
+        # Save the PDF document to HTML format
+        doc.SaveToFile(html_path, FileFormat.HTML)
+    except Exception as e:
+        print("Conversion Failed:", e)
+    finally:
+        doc.Close()
 
-def pdf_to_html(pdf_path):
-    # PDF'den veriyi çıkar
-    tables = tabula.read_pdf_with_template(pdf_path, pages="all")
-
-    # Çıkarılan veriyi HTML tablolarına dönüştürme
-    html_tables = []
-    for table in tables:
-        html_table = table.to_html()
-        html_tables.append(html_table)
-
-    # HTML tablolarını bir dosyaya yazma
-    with open(f"{pdf_path[:-4]}.html", "w", encoding="utf-8") as f:
-        for html_table in html_tables:
-            f.write(html_table)
-
-    # pdf2htmlEX komutunu kullanarak PDF'yi HTML'ye dönüştür
-    #subprocess.run(["pdf2htmlEX", pdf_path, f"{pdf_path[:-4]}.html"])
-
+# Örnek kullanım:
+# pdf_to_html("sample2.pdf", "PdfToHtml.html")

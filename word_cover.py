@@ -1,11 +1,14 @@
-import pdfplumber
-from docx import Document
+from pdf2docx import Converter
 
-def pdf_to_word(pdf_path):
-    doc = Document()
+def pdf_to_word(pdf_path, output_path):
+    try:
+        cv_obj = Converter(pdf_path)
+        cv_obj.convert(output_path)
+        cv_obj.close()
+    except Exception as e:
+        print("Conversion Failed:", e)
+    else:
+        print("File converted successfully")
 
-    with pdfplumber.open(pdf_path) as pdf:
-        for page in pdf.pages:
-            text = page.extract_text()
-            doc.add_paragraph(text)
-    doc.save(f"{pdf_path[:-4]}.doc")
+# Örnek kullanım:
+# pdf_to_word('sample2.pdf', 'output.docx')
