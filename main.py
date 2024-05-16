@@ -36,6 +36,7 @@ def convert_to_json():
         messagebox.showinfo("Başarılı", "PDF dönüştürme işlemi tamamlandı.")
 
 
+
 def convert_to_txt():
     text_cover.pdf_to_text(pdf_path_entry.get())
     messagebox.showinfo("Başarılı", "PDF dönüştürme işlemi tamamlandı.")
@@ -43,7 +44,7 @@ def convert_to_txt():
 def convert():
     convert_to_word()
     convert_to_json()
-#    convert_to_html()
+    convert_to_html()
     convert_to_txt()
 
 root = tk.Tk()
