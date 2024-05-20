@@ -3,6 +3,7 @@ import json
 import os
 import pdfplumber
 
+
 def extract_text_from_pdf(pdf_path):
     with pdfplumber.open(pdf_path) as pdf:
         pages = []
@@ -24,13 +25,14 @@ def extract_text_from_pdf(pdf_path):
             raw_text = page.extract_text()
             page_data["raw_text"] = raw_text.strip()
             pages.append(page_data)
-        
+
         # Tüm sayfaların metinlerini birleştirerek bir paragraf oluştur
         all_text = " ".join([page["raw_text"] for page in pages])
         # Son sayfada oluşturulan metni output.json dosyasına ekleyelim
         pages[-1]["raw_text"] = all_text
-        
-        return pages  
+
+        return pages
+
 
 def pdf_to_json(pdf_path, json_path):
     text_data = extract_text_from_pdf(pdf_path)
@@ -66,16 +68,14 @@ def pdf_to_json(pdf_path, json_path):
             page_data["images"].append({"index": img_index, "url": image_url})
 
         data["pages"].append(page_data)
-        
+
         # Add raw text to page data
         page_data["raw_text"] = text.strip()
-
 
     with open(json_path, "w") as json_file:
         json.dump(data, json_file, indent=4)
 
     print(f"JSON dosyası oluşturuldu: {json_path}")
-
 
 # Örnek kullanım:
 # pdf_to_json("sample2.pdf", "output.json")
