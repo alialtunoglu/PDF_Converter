@@ -1,15 +1,21 @@
-import pdfplumber
-
-def pdf_to_text(pdf_path):
-    with pdfplumber.open(pdf_path) as pdf:
-        text = ''
-        for page in pdf.pages:
-            text += page.extract_text()
-
-    with open(f"{pdf_path[:-4]}.txt", 'w', encoding='utf-8') as file:
-        file.write(text)
-
-    return text
+import fitz  # PyMuPDF kütüphanesi
 
 
+def pdf_to_text(pdf_path, output_path):
+    try:
+        # PDF dosyasını aç
+        document = fitz.open(pdf_path)
+        text = ""
 
+        # Her sayfayı oku ve metni biriktir
+        for page_num in range(len(document)):
+            page = document.load_page(page_num)
+            text += page.get_text()
+
+        # Metni belirtilen dosyaya kaydet
+        with open(output_path, 'w', encoding='utf-8') as text_file:
+            text_file.write(text)
+
+        print("PDF başarıyla metin dosyasına dönüştürüldü.")
+    except Exception as e:
+        print(f"Dönüştürme sırasında bir hata oluştu: {e}")
