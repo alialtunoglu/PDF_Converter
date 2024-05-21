@@ -45,11 +45,9 @@ def update_progress(progress, current, total, loading_screen, callback, *args):
 
 def convert_file(converter, pdf_path, output_dir, extension):
     if output_dir:
-        # Directory is selected, construct file path within this directory
         base_name = os.path.basename(pdf_path)
         output_file = os.path.join(output_dir, f"{os.path.splitext(base_name)[0]}.{extension}")
     else:
-        # Directory is not selected, ask for file path
         output_file = filedialog.asksaveasfilename(defaultextension=f".{extension}",
                                                    filetypes=[(f"{extension.upper()} files", f"*.{extension}")])
 
