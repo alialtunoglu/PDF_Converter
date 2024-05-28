@@ -1,4 +1,4 @@
-import fitz 
+import fitz  # PyMuPDF
 import json
 import os
 import pdfplumber
@@ -26,7 +26,9 @@ def extract_text_from_pdf(pdf_path):
             page_data["raw_text"] = raw_text.strip()
             pages.append(page_data)
 
+        # Tüm sayfaların metinlerini birleştirerek bir paragraf oluştur
         all_text = " ".join([page["raw_text"] for page in pages])
+        # Son sayfada oluşturulan metni output.json dosyasına ekleyelim
         pages[-1]["raw_text"] = all_text
 
         return pages
@@ -37,6 +39,7 @@ def pdf_to_json(pdf_path, json_path):
     doc = fitz.open(pdf_path)
     data = {"pages": []}
 
+    # Determine output directory
     output_dir = os.path.dirname(json_path)
     image_dir = os.path.join(output_dir, "_images")
 
@@ -66,6 +69,7 @@ def pdf_to_json(pdf_path, json_path):
 
         data["pages"].append(page_data)
 
+        # Add raw text to page data
         page_data["raw_text"] = text.strip()
 
     with open(json_path, "w") as json_file:
